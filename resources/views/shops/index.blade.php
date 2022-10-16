@@ -12,10 +12,18 @@
     </ul>
     <div id="map" style="height:50vh;"></div>
 
-    <a href="{{ route('shops.create') }}">create</a>
-    <!--routeの後はショップのURLになるところ-->
+    <button type="button" onclick="location.href='{{ route('shops.create') }}'">登録</button>
 @endsection
 
 @section('script')
     @include('partial.map')
+    <script>
+        @if (!empty($shops))
+            @foreach ($shops as $shop)
+                L.marker([{{ $shop->latitude }},{{ $shop->longitude }}])
+                    .bindPopup('<a href="{{ route('shops.show', $shop) }}">{{ $shop->name }}</a>', {closeButton: false})
+                    .addTo(map);
+            @endforeach
+        @endif
+    </script>
 @endsection
